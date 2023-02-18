@@ -1,4 +1,6 @@
-const Loader = () => (
+import { loader } from '../assets';
+
+const Loader = ({ title }) => (
   <div>Loader</div>
 );
 
