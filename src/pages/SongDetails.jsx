@@ -1,3 +1,3 @@
-const SongDetails = () => <div>SongDetails</div>;
+const SongDetails = () => <div>Coming Soon</div>;
 
 export default SongDetails;
