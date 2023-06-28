@@ -10,6 +10,7 @@ import { useGetTopChartsQuery } from '../redux/services/shazamCore';
 
 import 'swiper/css';
 import 'swiper/css/free-mode';
+import { skipSelector } from '@reduxjs/toolkit/dist/query';
 
 const TopChartCard = ({ song, i, isPlaying, activeSong, handlePauseClick, handlePlayClick }) => (
   <div className={`w-full flex flex-row items-center hover:bg-[#4c426e] ${activeSong?.title === song?.title ? 'bg-[#4c426e]' : 'bg-transparent'} py-2 p-4 rounded-lg cursor-pointer mb-2`}>
@@ -20,11 +21,6 @@ const TopChartCard = ({ song, i, isPlaying, activeSong, handlePauseClick, handle
         <Link to={`/songs/${song.key}`}>
           <p className="text-xl font-bold text-white">
             {song?.title}
-          </p>
-        </Link>
-        <Link to={`/artists/${song?.artists[0].adamid}`}>
-          <p className="text-base text-gray-300 mt-1">
-            {song?.subtitle}
           </p>
         </Link>
       </div>
@@ -42,14 +38,21 @@ const TopChartCard = ({ song, i, isPlaying, activeSong, handlePauseClick, handle
 const TopPlay = () => {
   const dispatch = useDispatch();
   const { activeSong, isPlaying } = useSelector((state) => state.player);
-  const { data } = useGetTopChartsQuery();
+  const { data, isLoading } = useGetTopChartsQuery();
   const divRef = useRef(null);
 
-  useEffect(() => {
-    divRef.current.scrollIntoView({ behavior: 'smooth' });
-  });
 
-  const topPlays = data?.slice(0, 5);
+  // useEffect(() => {
+  //   divRef.current.scrollIntoView({ behavior: 'smooth' });
+  // });
+
+  const topPlays = data;
+
+  console.log(topPlays)
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   const handlePauseClick = () => {
     dispatch(playPause(false));
@@ -71,7 +74,7 @@ const TopPlay = () => {
         </div>
 
         <div className="mt-4 flex flex-col gap-1">
-          {topPlays?.map((song, i) => (
+          {topPlays?.tracks.map((song, i) => (
             <TopChartCard
               key={song.key}
               song={song}
@@ -92,7 +95,6 @@ const TopPlay = () => {
             <p className="text-gray-300 text-base cursor-pointer">See more</p>
           </Link>
         </div>
-
         <Swiper
           slidesPerView="auto"
           spaceBetween={15}
@@ -102,17 +104,23 @@ const TopPlay = () => {
           modules={[FreeMode]}
           className="mt-4"
         >
-          {topPlays?.slice(0, 5).map((artist) => (
+          {/* {topPlays?.slice(0,5).map((artist) => (
             <SwiperSlide
               key={artist?.key}
               style={{ width: '25%', height: 'auto' }}
               className="shadow-lg rounded-full animate-slideright"
             >
-              <Link to={`/artists/${artist?.artists[0].adamid}`}>
-                <img src={artist?.images?.background} alt="Name" className="rounded-full w-full object-cover" />
+            {artist?.artists?.[0]?.adamid && artist?.images?.background && (
+              <Link to={`/artists/${artist.artists[0].adamid}`}>
+                <img
+                  src={artist.images.background}
+                  alt="Name"
+                  className="rounded-full w-full object-cover"
+                />
               </Link>
+            )}
             </SwiperSlide>
-          ))}
+          ))} */}
         </Swiper>
       </div>
     </div>

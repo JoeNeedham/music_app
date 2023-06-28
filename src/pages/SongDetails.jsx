@@ -11,12 +11,13 @@ const dispatch = useDispatch();
 const { songid, id: artistId } = useParams();
 const { activeSong, isPlaying } = useSelector((state) => state.player);
 
-const { data, isFetching: isFetchinRelatedSongs, error } = useGetSongRelatedQuery({ songid });
+const { data, isFetching: isFetchinRelatedSongs, error } = useGetSongRelatedQuery();
 const { data: songData, isFetching: isFetchingSongDetails } = useGetSongDetailsQuery({ songid });
 
-if (isFetchingSongDetails && isFetchinRelatedSongs) return <Loader title="Searching song details" />;
+if (isFetchingSongDetails) return <Loader title="Searching song details" />;
 
 console.log(songData);
+console.log("related",data)
 
 if (error) return <Error />;
 
