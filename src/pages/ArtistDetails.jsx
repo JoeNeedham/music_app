@@ -12,7 +12,6 @@ const ArtistDetails = () => {
   const { data, isFetching: isFetchinRelatedSongs } = useGetSongRelatedQuery();
 
   console.log("data", artistData)
-  console.log("artistID", artistId)
 
   if (isFetchingArtistDetails) return <Loader title="Loading artist details..." />;
 
@@ -24,6 +23,10 @@ const ArtistDetails = () => {
         artistId={artistId}
         artistData={artistData?.data[0]}
       />
+     {/*<ArtistAlbums 
+        pass artistData, run albums/get-details query in ArtistAblums component with albums IDs from artistData,
+        pass album data to albumbar component then render necessary data
+     />*/}
       <RelatedSongs
         data={data}
         artistId={artistId}
