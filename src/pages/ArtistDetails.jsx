@@ -9,6 +9,7 @@ const ArtistDetails = () => {
   const { id: artistId } = useParams();
   const { activeSong, isPlaying } = useSelector((state) => state.player);
   const { data: artistData, isFetching: isFetchingArtistDetails, error } = useGetArtistDetailsQuery(artistId);
+  // insert artist top song query use the artistId for the query 
   const { data, isFetching: isFetchinRelatedSongs } = useGetSongRelatedQuery();
 
   console.log("data", artistData)
@@ -23,9 +24,8 @@ const ArtistDetails = () => {
         artistId={artistId}
         artistData={artistData?.data[0]}
       />
-     {/*<ArtistAlbums 
-        pass artistData, run albums/get-details query in ArtistAblums component with albums IDs from artistData,
-        pass album data to albumbar component then render necessary data
+     {/*<ArtistTopSongs
+        pass data from top artist query
      />*/}
       <RelatedSongs
         data={data}
